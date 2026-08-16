@@ -35,7 +35,7 @@ export function NowSection() {
         <div className="flex flex-col xl:flex-row w-full gap-24 xl:gap-40 items-start">
 
           {/* Main Statement (Left Side on Desktop) */}
-          <div className="w-full xl:w-2/5 flex flex-col gap-10 sticky top-32">
+          <div className="w-full xl:w-2/5 flex flex-col gap-10 relative xl:sticky xl:top-32">
             <TextReveal as="h3" className="text-[clamp(2.5rem,4vw,4rem)] font-[var(--font-display)] font-bold uppercase tracking-tight text-white leading-[1.1]" staggerDelay={0.03}>
               BUILDING CLOSER TO THE HARDWARE.
             </TextReveal>
