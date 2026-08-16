@@ -196,7 +196,8 @@ export function ArchiveSection() {
               animate={{ scale: 1, opacity: 1, y: 0 }}
               exit={{ scale: 0.95, opacity: 0, y: 20 }}
               transition={{ type: 'spring', damping: 25, stiffness: 300 }}
-              className="relative z-10 w-full max-w-5xl px-4 md:px-12 flex flex-col items-center pointer-events-none"
+              className="relative z-10 w-full max-w-5xl px-4 md:px-12 flex flex-col items-center"
+              onClick={(e) => e.stopPropagation()}
             >
 
               {/* Modal Header */}
@@ -211,16 +212,16 @@ export function ArchiveSection() {
                 </div>
                 <button
                   onClick={closeFolder}
-                  onMouseEnter={() => resetCursor()}
+                  onMouseEnter={() => setCursor('default')}
                   onMouseLeave={resetCursor}
-                  className="pointer-events-auto text-white/50 hover:text-white transition-colors font-mono text-xs uppercase tracking-widest"
+                  className="text-white/50 hover:text-white transition-colors font-mono text-xs uppercase tracking-widest"
                 >
                   [ CLOSE ]
                 </button>
               </div>
 
               {/* Image Viewer */}
-              <div className="relative w-full aspect-[4/3] md:aspect-[16/9] lg:aspect-[2/1] bg-[#0c0c0c] border border-white/10 rounded-lg shadow-2xl flex items-center justify-center overflow-hidden pointer-events-auto group">
+              <div className="relative w-full aspect-[4/3] md:aspect-[16/9] lg:aspect-[2/1] bg-[#0c0c0c] border border-white/10 rounded-lg shadow-2xl flex items-center justify-center overflow-hidden group">
                 <AnimatePresence mode='wait'>
                   <motion.img
                     key={activeFolder.certs[activeIndex].id}
