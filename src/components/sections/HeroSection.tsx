@@ -83,7 +83,7 @@ export function HeroSection() {
             >
               <InteractiveName
                 name="Habikugasarma.K"
-                className="text-[clamp(2.8rem,7.5vw,6.5rem)] leading-[0.95] font-bold tracking-[-0.03em] text-[var(--white)]"
+                className="text-[clamp(1.8rem,9vw,6.5rem)] leading-[0.95] font-bold tracking-[-0.03em] text-[var(--white)] break-all md:break-normal"
               />
             </motion.div>
 

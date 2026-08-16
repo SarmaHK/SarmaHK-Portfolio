@@ -124,7 +124,7 @@ export function ArchiveSection() {
           className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-x-12 gap-y-24 mt-12"
         >
           {folders.map(folder => (
-            <motion.div key={folder.category} initial="rest" whileHover="hover" animate="rest">
+            <motion.div key={folder.category} initial="rest" whileHover="hover" whileTap="hover" animate="rest">
               <FolderCard category={folder.category} certs={folder.certs} />
             </motion.div>
           ))}

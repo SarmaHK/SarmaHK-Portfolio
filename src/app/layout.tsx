@@ -18,7 +18,7 @@ import './globals.css';
 export const metadata: Metadata = {
   title: 'Sarma HK',
   description:
-    'Portfolio of Sarma HK — Software Engineering Student at the University of Kelaniya, specializing in IoT, Cloud Computing, and modern web architectures.',
+    'Portfolio of Sarma HK — Software Engineering Student at the University of Kelaniya, specializing in I  oT, Cloud Computing, and modern web architectures.',
   icons: {
     icon: '/images/favicon.png',
     apple: '/images/favicon.png',
@@ -52,11 +52,7 @@ export default function RootLayout({
       lang="en"
       className={`${outfit.variable} ${inter.variable} ${jetbrainsMono.variable}`}
     >
-      <body
-        style={{
-          fontFamily: 'var(--font-display)',
-        }}
-      >
+      <body className="overflow-x-hidden w-full bg-[var(--deep-black)] text-[var(--white)] font-sans antialiased">
         <CursorProvider>
           <CreativeModeProvider>
             <LoadingProvider>

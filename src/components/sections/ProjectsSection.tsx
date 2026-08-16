@@ -217,9 +217,8 @@ export function ProjectsSection() {
               </motion.div>
 
               {/* ── Hover-Reveal Glassmorphic Panel ── */}
-              {/* Uses CSS translate to slide up and opacity to fade in on group-hover */}
-              <div className="absolute inset-x-0 bottom-0 z-10 flex flex-col items-start text-left bg-[var(--surface-elevated)]/70 backdrop-blur-3xl border-t border-white/10 p-6 lg:p-8 transform translate-y-[10px] md:translate-y-[20px] opacity-0 group-hover:translate-y-0 group-hover:opacity-100 transition-all duration-500 ease-[cubic-bezier(0.16,1,0.3,1)]">
-
+              {/* Uses CSS translate to slide up and opacity to fade in on group-hover for desktop. Constantly visible on small viewports. */}
+              <div className="absolute inset-x-0 bottom-0 z-10 flex flex-col items-start text-left bg-[var(--deep-black)]/85 md:bg-[var(--surface-elevated)]/70 backdrop-blur-3xl border-t border-white/10 p-5 md:p-6 lg:p-8 transform translate-y-0 md:translate-y-[10px] lg:translate-y-[20px] opacity-100 md:opacity-0 group-hover:translate-y-0 group-hover:opacity-100 transition-all duration-500 ease-[cubic-bezier(0.16,1,0.3,1)]">
                 {/* Subtle top inner shadow for depth */}
                 <div className="absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-white/10 to-transparent" />
 
