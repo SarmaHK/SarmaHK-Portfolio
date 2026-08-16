@@ -13,7 +13,7 @@ const LoadingContext = createContext<LoadingContextType>({
   isLoading: true,
   loadingProgress: 0,
   loadingStage: '',
-  setLoadingComplete: () => {},
+  setLoadingComplete: () => { },
 });
 
 const LOADING_STAGES = [
@@ -36,20 +36,58 @@ export function LoadingProvider({ children }: { children: ReactNode }) {
   useEffect(() => {
     if (!isLoading) return;
 
+    // Array of critical images to preload
+    const criticalImages = [
+      '/images/hero/K.Habikugasarma.jpeg',
+      '/images/hero/Kelaniya.png',
+      '/images/hero/Vavuniya_Tamil_Madhya_Maha_Vidyalayam.jpg',
+      '/images/projects/Retro Snake gamer.png',
+      '/images/projects/S&S console game.png',
+      '/images/projects/Lankacourier management system.png',
+    ];
+
     let currentStage = 0;
+
+    // Simulate initial fast progress for UX
     const stageInterval = setInterval(() => {
-      currentStage++;
-      if (currentStage < LOADING_STAGES.length) {
+      if (currentStage < LOADING_STAGES.length - 2) {
+        currentStage++;
         setLoadingStage(LOADING_STAGES[currentStage]);
-        setLoadingProgress(((currentStage + 1) / LOADING_STAGES.length) * 100);
-      } else {
-        clearInterval(stageInterval);
-        // Allow a brief moment at READY. before completing
+        setLoadingProgress(((currentStage + 1) / LOADING_STAGES.length) * 80); // Cap at 80% while loading images
+      }
+    }, 400);
+
+    // Actual image preloading
+    const preloadImages = () => {
+      return Promise.all(
+        criticalImages.map((src) => {
+          return new Promise((resolve) => {
+            const img = new Image();
+            img.src = src;
+            img.onload = resolve;
+            img.onerror = resolve; // Resolve even on error to not block UI
+          });
+        })
+      );
+    };
+
+    // Timeout fallback (max 3 seconds)
+    const timeoutPromise = new Promise((resolve) => setTimeout(resolve, 3000));
+
+    Promise.race([preloadImages(), timeoutPromise]).then(() => {
+      clearInterval(stageInterval);
+      setLoadingStage(LOADING_STAGES[LOADING_STAGES.length - 2]); // Rendering Experience
+      setLoadingProgress(95);
+
+      setTimeout(() => {
+        setLoadingStage(LOADING_STAGES[LOADING_STAGES.length - 1]); // READY.
+        setLoadingProgress(100);
+
         setTimeout(() => {
           setLoadingComplete();
-        }, 400);
-      }
-    }, 350);
+        }, 500);
+      }, 400);
+    });
 
     return () => clearInterval(stageInterval);
   }, [isLoading, setLoadingComplete]);
