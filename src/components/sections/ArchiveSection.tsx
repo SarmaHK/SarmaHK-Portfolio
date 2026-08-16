@@ -71,11 +71,11 @@ const FolderCard = ({ category, certs }: { category: string; certs: Certificate[
 
       {/* ── FRONT FLAP (FROSTED GLASS) ── */}
       <motion.div
-        className="absolute bottom-0 left-0 w-full h-[75%] rounded-xl rounded-tl-none border-t border-l border-white/20 shadow-2xl z-10 origin-bottom flex items-center justify-center overflow-hidden"
+        className="absolute bottom-0 left-0 w-full h-[75%] rounded-xl rounded-tl-none border-t border-l border-white/10 shadow-2xl z-10 origin-bottom flex items-center justify-center overflow-hidden"
         style={{
-          background: 'linear-gradient(135deg, rgba(255,255,255,0.1) 0%, rgba(255,255,255,0.02) 100%)',
-          backdropFilter: 'blur(12px)',
-          WebkitBackdropFilter: 'blur(12px)'
+          background: 'linear-gradient(135deg, rgba(15,15,15,0.85) 0%, rgba(15,15,15,0.4) 100%)',
+          backdropFilter: 'blur(16px)',
+          WebkitBackdropFilter: 'blur(16px)'
         }}
         variants={{
           rest: { rotateX: 0 },
@@ -86,7 +86,7 @@ const FolderCard = ({ category, certs }: { category: string; certs: Certificate[
         {/* Specular highlight */}
         <div className="absolute inset-0 bg-gradient-to-tr from-transparent via-[var(--gold)]/10 to-transparent mix-blend-overlay" />
 
-        <h3 className="text-white font-bold text-2xl uppercase tracking-widest drop-shadow-lg z-20">
+        <h3 className="text-white font-extrabold text-2xl uppercase tracking-widest drop-shadow-[0_4px_16px_rgba(0,0,0,0.9)] z-20">
           {category.replace('_', ' ')}
         </h3>
       </motion.div>
