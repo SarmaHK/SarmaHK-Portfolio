@@ -160,8 +160,16 @@ export function ArchiveSection() {
           className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-x-12 gap-y-24 mt-12"
         >
           {folders.map(folder => (
-            <motion.div key={folder.category} initial="rest" whileHover="hover" whileTap="hover" animate="rest">
-              <FolderCard category={folder.category} certs={folder.certs} onClick={() => openFolder(folder)} />
+            <motion.div
+              key={folder.category}
+              initial="rest"
+              whileHover="hover"
+              whileTap="hover"
+              animate="rest"
+              onClick={() => openFolder(folder)}
+              className="cursor-pointer"
+            >
+              <FolderCard category={folder.category} certs={folder.certs} />
             </motion.div>
           ))}
         </motion.div>
@@ -178,7 +186,7 @@ export function ArchiveSection() {
               exit={{ opacity: 0 }}
               className="absolute inset-0 bg-black/90 backdrop-blur-sm cursor-pointer"
               onClick={closeFolder}
-              onMouseEnter={() => setCursor('close')}
+              onMouseEnter={() => resetCursor()}
               onMouseLeave={resetCursor}
             />
 
@@ -203,7 +211,7 @@ export function ArchiveSection() {
                 </div>
                 <button
                   onClick={closeFolder}
-                  onMouseEnter={() => setCursor('close')}
+                  onMouseEnter={() => resetCursor()}
                   onMouseLeave={resetCursor}
                   className="pointer-events-auto text-white/50 hover:text-white transition-colors font-mono text-xs uppercase tracking-widest"
                 >
