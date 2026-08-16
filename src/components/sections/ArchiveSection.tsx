@@ -39,7 +39,7 @@ const FolderCard = ({ category, certs }: { category: string; certs: Certificate[
             key={cert.id}
             initial={{ y: 0, x: 0, rotate: 0, scale: 0.95 }}
             whileHover={{ scale: 1.05 }}
-            className={`absolute bottom-6 w-[80%] aspect-[3/2] bg-[#0c0c0c] border border-white/10 rounded-lg p-4 shadow-2xl flex flex-col justify-between`}
+            className={`absolute bottom-6 w-[80%] aspect-[3/2] bg-[#0c0c0c] border border-white/10 rounded-lg shadow-2xl overflow-hidden`}
             style={{ zIndex: index }}
             variants={{
               rest: { y: 10 + index * 5, x: 0, rotate: 0, scale: 0.95 },
@@ -52,12 +52,19 @@ const FolderCard = ({ category, certs }: { category: string; certs: Certificate[
             }}
             transition={{ type: 'spring', stiffness: 300, damping: 20 }}
           >
-            <div className="flex flex-col gap-1">
-              <span className="text-[7px] text-[var(--gold)] uppercase font-mono tracking-wider line-clamp-1">{cert.issuer}</span>
-              <h4 className="text-white text-xs font-semibold leading-tight line-clamp-2">{cert.title}</h4>
-            </div>
+            {cert.image ? (
+              <img src={cert.image} alt={cert.title} className="absolute inset-0 w-full h-full object-cover" />
+            ) : (
+              <div className="absolute inset-0 p-4 flex flex-col justify-between">
+                <div className="flex flex-col gap-1">
+                  <span className="text-[7px] text-[var(--gold)] uppercase font-mono tracking-wider line-clamp-1">{cert.issuer}</span>
+                  <h4 className="text-white text-xs font-semibold leading-tight line-clamp-2">{cert.title}</h4>
+                </div>
+              </div>
+            )}
+
             {/* Holographic shimmer effect */}
-            <div className="absolute inset-0 bg-gradient-to-tr from-transparent via-white/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-700" />
+            <div className="absolute inset-0 bg-gradient-to-tr from-transparent via-white/10 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-700 pointer-events-none" />
           </motion.div>
         ))}
       </div>
