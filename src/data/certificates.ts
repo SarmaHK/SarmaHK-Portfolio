@@ -12,7 +12,7 @@ export const certificates: Certificate[] = [
     issuer: 'Machine Learning',
     date: '2024',
     category: 'AI_ML',
-    image: '/certificates/AIML Engineer – Stage 2 E-Ceryificate.jpg',
+    image: '/certificates/AI_ML/AIML Engineer – Stage 2 E-Ceryificate.jpg',
     verificationUrl: '#',
   },
 
@@ -23,7 +23,7 @@ export const certificates: Certificate[] = [
     issuer: 'Meta',
     date: '2024',
     category: 'SOFTWARE',
-    image: '/certificates/Advance React.jpg',
+    image: '/certificates/SOFTWARE/Advance React.jpg',
     verificationUrl: '#',
   },
   {
@@ -32,7 +32,7 @@ export const certificates: Certificate[] = [
     issuer: 'Meta',
     date: '2024',
     category: 'SOFTWARE',
-    image: '/certificates/React Basics.jpg',
+    image: '/certificates/SOFTWARE/React Basics.jpg',
     verificationUrl: '#',
   },
   {
@@ -41,7 +41,7 @@ export const certificates: Certificate[] = [
     issuer: 'Meta',
     date: '2024',
     category: 'SOFTWARE',
-    image: '/certificates/FrontEnd Development.jpg',
+    image: '/certificates/SOFTWARE/FrontEnd Development.jpg',
     verificationUrl: '#',
   },
   {
@@ -50,7 +50,7 @@ export const certificates: Certificate[] = [
     issuer: 'Meta',
     date: '2024',
     category: 'SOFTWARE',
-    image: '/certificates/CSS Depth.jpg',
+    image: '/certificates/SOFTWARE/CSS Depth.jpg',
     verificationUrl: '#',
   },
   {
@@ -59,7 +59,7 @@ export const certificates: Certificate[] = [
     issuer: 'Meta',
     date: '2024',
     category: 'SOFTWARE',
-    image: '/certificates/Web_Design_for_Beginners_E-Certificate.jpg',
+    image: '/certificates/SOFTWARE/Web_Design_for_Beginners_E-Certificate.jpg',
     verificationUrl: '#',
   },
 
@@ -70,7 +70,7 @@ export const certificates: Certificate[] = [
     issuer: 'Meta',
     date: '2024',
     category: 'DEVOPS',
-    image: '/certificates/Version control.jpg',
+    image: '/certificates/DEVOPS/Version control.jpg',
     verificationUrl: '#',
   },
 
@@ -81,7 +81,7 @@ export const certificates: Certificate[] = [
     issuer: 'Security',
     date: '2024',
     category: 'CYBERSECURITY',
-    image: '/certificates/The Cybersecurity Threa Landscape.jpeg',
+    image: '/certificates/CYBERSECURITY/The Cybersecurity Threa Landscape.jpeg',
     verificationUrl: '#',
   },
 ];
