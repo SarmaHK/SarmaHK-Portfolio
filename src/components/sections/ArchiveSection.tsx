@@ -1,13 +1,14 @@
 'use client';
 
-import { motion } from 'framer-motion';
+import { useState } from 'react';
+import { motion, AnimatePresence } from 'framer-motion';
 import { FadeIn } from '@/components/motion/FadeIn';
 import { TextReveal } from '@/components/motion/TextReveal';
 import { certificates, certificateCategories } from '@/data/certificates';
 import type { Certificate } from '@/data/types';
 import { useCursorState } from '@/providers/CursorProvider';
 
-const FolderCard = ({ category, certs }: { category: string; certs: Certificate[] }) => {
+const FolderCard = ({ category, certs, onClick }: { category: string; certs: Certificate[]; onClick?: () => void }) => {
   const { setCursor, resetCursor } = useCursorState();
 
   // Pick up to 3 certs to display as cards
@@ -19,8 +20,9 @@ const FolderCard = ({ category, certs }: { category: string; certs: Certificate[
   return (
     <div
       className="relative w-full max-w-sm mx-auto aspect-[4/3] group cursor-pointer perspective-[2000px]"
-      onMouseEnter={() => setCursor('explore')}
+      onMouseEnter={() => setCursor('open')}
       onMouseLeave={resetCursor}
+      onClick={onClick}
     >
       {/* ── BACK OF THE FOLDER ── */}
       <div className="absolute inset-0 bg-[#1c1c1c] border border-white/5 rounded-xl rounded-tl-none shadow-xl transition-colors duration-500 group-hover:bg-[#252525]">
@@ -96,6 +98,12 @@ const FolderCard = ({ category, certs }: { category: string; certs: Certificate[
 };
 
 export function ArchiveSection() {
+  const { setCursor, resetCursor } = useCursorState();
+
+  // Modal State
+  const [activeFolder, setActiveFolder] = useState<{ category: string; certs: Certificate[] } | null>(null);
+  const [activeIndex, setActiveIndex] = useState(0);
+
   // Group certificates by category, excluding 'ALL'
   const folders = certificateCategories
     .filter(cat => cat !== 'ALL')
@@ -105,10 +113,31 @@ export function ArchiveSection() {
     }))
     .filter(folder => folder.certs.length > 0);
 
+  const openFolder = (folder: { category: string; certs: Certificate[] }) => {
+    setActiveFolder(folder);
+    setActiveIndex(0);
+    resetCursor();
+  };
+
+  const closeFolder = () => {
+    setActiveFolder(null);
+    resetCursor();
+  };
+
+  const nextCert = (e: React.MouseEvent) => {
+    e.stopPropagation();
+    if (activeFolder) setActiveIndex(prev => (prev + 1) % activeFolder.certs.length);
+  };
+
+  const prevCert = (e: React.MouseEvent) => {
+    e.stopPropagation();
+    if (activeFolder) setActiveIndex(prev => (prev - 1 + activeFolder.certs.length) % activeFolder.certs.length);
+  };
+
   return (
     <section
       id="archive"
-      className="section-spacing"
+      className="section-spacing relative"
       style={{ background: 'var(--deep-black)' }}
     >
       <div className="section-container">
@@ -132,11 +161,108 @@ export function ArchiveSection() {
         >
           {folders.map(folder => (
             <motion.div key={folder.category} initial="rest" whileHover="hover" whileTap="hover" animate="rest">
-              <FolderCard category={folder.category} certs={folder.certs} />
+              <FolderCard category={folder.category} certs={folder.certs} onClick={() => openFolder(folder)} />
             </motion.div>
           ))}
         </motion.div>
       </div>
+
+      {/* ── LIGHTBOX MODAL ── */}
+      <AnimatePresence>
+        {activeFolder && (
+          <div className="fixed inset-0 z-50 flex items-center justify-center">
+            {/* Backdrop */}
+            <motion.div
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              className="absolute inset-0 bg-black/90 backdrop-blur-sm cursor-pointer"
+              onClick={closeFolder}
+              onMouseEnter={() => setCursor('close')}
+              onMouseLeave={resetCursor}
+            />
+
+            {/* Modal Content container */}
+            <motion.div
+              initial={{ scale: 0.95, opacity: 0, y: 20 }}
+              animate={{ scale: 1, opacity: 1, y: 0 }}
+              exit={{ scale: 0.95, opacity: 0, y: 20 }}
+              transition={{ type: 'spring', damping: 25, stiffness: 300 }}
+              className="relative z-10 w-full max-w-5xl px-4 md:px-12 flex flex-col items-center pointer-events-none"
+            >
+
+              {/* Modal Header */}
+              <div className="w-full flex justify-between items-end mb-6">
+                <div className="flex flex-col gap-1">
+                  <span className="font-mono text-[10px] tracking-[0.3em] text-[var(--gold)] uppercase">
+                    {activeFolder.category.replace('_', ' ')}
+                  </span>
+                  <span className="text-white/50 text-xs font-mono tracking-widest uppercase">
+                    {activeIndex + 1} OF {activeFolder.certs.length}
+                  </span>
+                </div>
+                <button
+                  onClick={closeFolder}
+                  onMouseEnter={() => setCursor('close')}
+                  onMouseLeave={resetCursor}
+                  className="pointer-events-auto text-white/50 hover:text-white transition-colors font-mono text-xs uppercase tracking-widest"
+                >
+                  [ CLOSE ]
+                </button>
+              </div>
+
+              {/* Image Viewer */}
+              <div className="relative w-full aspect-[4/3] md:aspect-[16/9] lg:aspect-[2/1] bg-[#0c0c0c] border border-white/10 rounded-lg shadow-2xl flex items-center justify-center overflow-hidden pointer-events-auto group">
+                <AnimatePresence mode='wait'>
+                  <motion.img
+                    key={activeFolder.certs[activeIndex].id}
+                    src={activeFolder.certs[activeIndex].image}
+                    alt={activeFolder.certs[activeIndex].title}
+                    initial={{ opacity: 0, scale: 1.02 }}
+                    animate={{ opacity: 1, scale: 1 }}
+                    exit={{ opacity: 0, scale: 0.98 }}
+                    transition={{ duration: 0.3 }}
+                    className="absolute inset-0 w-full h-full object-contain"
+                  />
+                </AnimatePresence>
+
+                {/* Left/Right Controls (Inside Viewer on Mobile, Edges on Desktop) */}
+                {activeFolder.certs.length > 1 && (
+                  <>
+                    <button
+                      onClick={prevCert}
+                      onMouseEnter={() => setCursor('view')}
+                      onMouseLeave={resetCursor}
+                      className="absolute left-2 md:left-6 top-1/2 -translate-y-1/2 w-10 h-10 md:w-14 md:h-14 bg-black/60 hover:bg-[var(--gold)] border border-white/10 hover:border-transparent rounded-full flex items-center justify-center text-white hover:text-black backdrop-blur-md transition-all duration-300 opacity-100 lg:opacity-0 lg:group-hover:opacity-100"
+                    >
+                      ←
+                    </button>
+                    <button
+                      onClick={nextCert}
+                      onMouseEnter={() => setCursor('view')}
+                      onMouseLeave={resetCursor}
+                      className="absolute right-2 md:right-6 top-1/2 -translate-y-1/2 w-10 h-10 md:w-14 md:h-14 bg-black/60 hover:bg-[var(--gold)] border border-white/10 hover:border-transparent rounded-full flex items-center justify-center text-white hover:text-black backdrop-blur-md transition-all duration-300 opacity-100 lg:opacity-0 lg:group-hover:opacity-100"
+                    >
+                      →
+                    </button>
+                  </>
+                )}
+              </div>
+
+              {/* Metadata Footer */}
+              <div className="w-full mt-6 text-center">
+                <h3 className="text-white text-lg md:text-xl font-bold uppercase tracking-tight">
+                  {activeFolder.certs[activeIndex].title}
+                </h3>
+                <p className="text-[var(--gold)]/70 text-xs font-mono uppercase tracking-widest mt-2">
+                  {activeFolder.certs[activeIndex].issuer}
+                </p>
+              </div>
+
+            </motion.div>
+          </div>
+        )}
+      </AnimatePresence>
     </section>
   );
 }
